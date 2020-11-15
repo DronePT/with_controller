@@ -37,8 +37,6 @@ class WithController<C> extends StatefulWidget {
   /// Builder function. Takes a [BuildContext] and a controller;
   final WidgetControllerBuilder<C> builder;
 
-  final Function onInit;
-
   const WithController({
     @required this.controller,
     @required this.builder,
