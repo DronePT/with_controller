@@ -27,14 +27,24 @@ class WithController<C> extends StatefulWidget {
   /// ```
   final ControllerDisposer<C> disposer;
 
+  /// Initiater function of the controller.
+  ///
+  /// ```dart
+  /// (context, controller) => controller.getSomethingFromAPI();
+  /// ```
+  final ControllerInitiater<C> init;
+
   /// Builder function. Takes a [BuildContext] and a controller;
   final WidgetControllerBuilder<C> builder;
+
+  final Function onInit;
 
   const WithController({
     @required this.controller,
     @required this.builder,
     this.reactions = const [],
     this.disposer,
+    this.init,
     Key key,
   }) : super(key: key);
 
@@ -65,6 +75,8 @@ class WithControllerState<C> extends State<WithController<C>> {
   void didChangeDependencies() {
     if (controller == null) {
       controller = widget.controller(context);
+
+      if (widget.init != null) widget.init(context, controller);
     }
 
     if (reactionDisposers == null) {
