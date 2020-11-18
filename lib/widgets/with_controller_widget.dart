@@ -1,4 +1,5 @@
 import 'package:mobx/mobx.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter/widgets.dart';
 import 'package:with_controller/typedefs.dart';
 
@@ -78,13 +79,15 @@ class WithControllerState<C> extends State<WithController<C>> {
     }
 
     if (reactionDisposers == null) {
-      reactionDisposers =
-          widget.reactions.map((creator) => creator(controller)).toList();
+      reactionDisposers = widget.reactions
+          .map((creator) => creator(context, controller))
+          .toList();
     }
 
     super.didChangeDependencies();
   }
 
   @override
-  Widget build(BuildContext context) => widget.builder(context, controller);
+  Widget build(BuildContext context) =>
+      Observer(builder: (_) => widget.builder(context, controller));
 }
