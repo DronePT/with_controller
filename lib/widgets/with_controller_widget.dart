@@ -38,9 +38,13 @@ class WithController<C> extends StatefulWidget {
   /// Builder function. Takes a [BuildContext] and a controller;
   final WidgetControllerBuilder<C> builder;
 
+  /// If true, the builder function will be wrapped by an Observer widget;
+  final bool observable;
+
   const WithController({
     @required this.controller,
     @required this.builder,
+    this.observable = true,
     this.reactions = const [],
     this.disposer,
     this.init,
@@ -88,6 +92,7 @@ class WithControllerState<C> extends State<WithController<C>> {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      Observer(builder: (_) => widget.builder(context, controller));
+  Widget build(BuildContext context) => widget.observable
+      ? Observer(builder: (_) => widget.builder(context, controller))
+      : widget.builder(context, controller);
 }
